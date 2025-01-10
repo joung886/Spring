@@ -1,3 +1,4 @@
+
 package com.dw.jpaapp.model;
 
 import com.dw.jpaapp.dto.CourseDTO;
@@ -17,12 +18,13 @@ import java.util.List;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "title" , nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description" , nullable = false)
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
@@ -31,8 +33,8 @@ public class Course {
 
     @ManyToMany
     @JoinTable(name = "course_student",
-        joinColumns = @JoinColumn(name = "course_id"),
-        inverseJoinColumns = @JoinColumn(name = "student_id"))
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> studentList = new ArrayList<>();
 
     // CourseDTO 매핑 메서드

@@ -1,4 +1,3 @@
-
 package com.dw.jpaapp.dto;
 
 import com.dw.jpaapp.model.Instructor;

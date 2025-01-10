@@ -3,7 +3,6 @@ package com.dw.jpaapp.controller;
 
 import com.dw.jpaapp.dto.CourseDTO;
 import com.dw.jpaapp.model.Course;
-import com.dw.jpaapp.repository.CourseRepository;
 import com.dw.jpaapp.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ public class CourseController {
                 HttpStatus.OK);
     }
 
+    // 과제5-1. 검색어를 매개변수로 전달하고 검색어를 포함한 title을 가진 과목을 조회
     @GetMapping("/course/search")
     public ResponseEntity<List<CourseDTO>> getCoursesLike(
             @RequestParam String title) {
@@ -33,6 +33,7 @@ public class CourseController {
                 HttpStatus.OK);
     }
 
+    // 과제5-2. 과목 정보를 새로 저장
     @PostMapping("/course/save")
     public ResponseEntity<CourseDTO> saveCourse(
             @RequestBody CourseDTO courseDTO) {
@@ -40,5 +41,4 @@ public class CourseController {
                 courseService.saveCourse(courseDTO),
                 HttpStatus.CREATED);
     }
-
 }

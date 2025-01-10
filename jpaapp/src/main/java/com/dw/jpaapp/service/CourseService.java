@@ -27,29 +27,27 @@ public class CourseService {
 
     public List<CourseDTO> getAllCourses() {
         return courseRepository.findAll().stream().map(Course::toDTO)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
     }
+
+    // 과제5-1. 검색어를 매개변수로 전달하고 검색어를 포함한 title을 가진 과목을 조회
     public List<CourseDTO> getCoursesLike(String title) {
-       return courseRepository.findByTitleLike("%" + title + "%")
+        return courseRepository.findByTitleLike("%" + title + "%")
                 .stream().map(Course::toDTO).toList();
-
-
     }
+
+    // 과제5-2. 과목 정보를 새로 저장
     public CourseDTO saveCourse(CourseDTO courseDTO) {
         Course course = new Course();
         course.setTitle(courseDTO.getTitle());
         course.setDescription(courseDTO.getDescription());
-        Instructor instructor = instructorRepository
-                .findById(courseDTO.getInstructorId())
-                .orElseThrow(()->new RuntimeException("No instructor"));
-        course.setInstructor_fk(instructor);
-        List<Student> students = new ArrayList<>();
-        for (Long id : courseDTO.getStudentIds()) {
-            students.add(studentRepository.findById(id)
-                    .orElseThrow(()->new RuntimeException("No student")));
-        }
-        course.setStudentList(students);
-
+        course.setInstructor_fk(instructorRepository.findById(courseDTO.getInstructorId())
+                .orElseThrow(()->new RuntimeException("No instructor")));
+        course.setStudentList(courseDTO.getStudentIds().stream()
+                .map(id->studentRepository.findById(id))
+                .map(optional->optional.orElseThrow(()->new RuntimeException("No Student")))
+                .toList()
+        );
         return courseRepository.save(course).toDTO();
     }
 }

@@ -1,3 +1,4 @@
+
 package com.dw.jpaapp.model;
 
 import com.dw.jpaapp.dto.InstructorDTO;
@@ -6,6 +7,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,26 +19,21 @@ import java.util.List;
 public class Instructor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @Column(name = "name",nullable = false)
+
+    @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "career")
     private String career;
 
     @OneToMany(mappedBy = "instructor_fk")
-    private List<Course>courseList=new ArrayList<>();
+    private List<Course> courseList = new ArrayList<>();
 
+    // InstructorDTO 매핑 메서드
     public InstructorDTO toDTO() {
-        InstructorDTO instructorDTO = new InstructorDTO();
-        instructorDTO.setId(this.id);
-        instructorDTO.setName(this.name);
-        instructorDTO.setCareer(this.career);
-        List<Long> courseIds = new ArrayList<>();
-        for (Course data : this.courseList) {
-            courseIds.add(data.getId());
-        }
-        instructorDTO.setCourseList(courseIds);
-        return instructorDTO;
+        List<Long> courseIds = courseList.stream().map(Course::getId).toList();
+        return new InstructorDTO(
+                this.id, this.name, this.career, courseIds);
     }
 }

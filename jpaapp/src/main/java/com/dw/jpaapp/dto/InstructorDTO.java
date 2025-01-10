@@ -1,5 +1,7 @@
+
 package com.dw.jpaapp.dto;
 
+import com.dw.jpaapp.model.Course;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -14,5 +16,5 @@ public class InstructorDTO {
     private Long id;
     private String name;
     private String career;
-    private List<Long> courseList = new ArrayList<>();
+    private List<Long> courseIds = new ArrayList<>();
 }
